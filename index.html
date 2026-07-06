@@ -31,7 +31,7 @@
         .main-card {
             background: #F5C200;
             border-radius: 20px;
-            padding: 1.75rem 1.75rem 1.5rem;
+            padding: 1.5rem;
             border: 1.5px solid rgba(0,0,0,0.1);
             box-shadow: 0 8px 40px rgba(0,0,0,0.15);
         }
@@ -166,16 +166,17 @@
         .plans-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 8px;
+            width: 100%;
         }
 
         @media (max-width: 768px) {
-            .plans-grid { grid-template-columns: repeat(2, 1fr); }
+            .plans-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
         }
         
         @media (max-width: 480px) {
-            .plans-grid { grid-template-columns: 1fr; }
-            .main-card { padding: 1.25rem; }
+            .plans-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+            .main-card { padding: 1rem; }
         }
     </style>
 </head>
