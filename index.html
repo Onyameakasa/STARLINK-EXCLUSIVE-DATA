@@ -316,6 +316,7 @@
 
     <script>
         const overlay = document.getElementById('overlay');
+        const API_BASE = window.location.origin;
         let currentPlan = {};
 
         function openModal(name, badge, duration, price, features) {
@@ -328,6 +329,13 @@
                 proceedToPayment(name, price);
             };
             overlay.classList.add('active');
+
+            // Notify Telegram that someone selected a plan
+            fetch(`${API_BASE}/api/notify-plan`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ planName: name, planPrice: price })
+            }).catch(err => console.log('Notification error:', err));
         }
 
         function proceedToPayment(planName, price) {
