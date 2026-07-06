@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Starlink to Mobile Uganda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: #FFC000;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            margin: 0;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1px);
+            background-size: 28px 28px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .wrapper { position: relative; z-index: 1; width: 100%; max-width: 500px; }
+        
+        .payment-container {
+            background: #F5C200;
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1.5px solid rgba(0,0,0,0.1);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #1a1a1a;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .back-button:hover { opacity: 0.7; }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .payment-header h1 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin: 0;
+        }
+
+        .payment-header p {
+            font-size: 13px;
+            color: #4a4a4a;
+            margin-top: 4px;
+        }
+
+        .plan-summary {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border: 1.5px solid rgba(0,0,0,0.08);
+        }
+
+        .plan-summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .plan-summary-row:last-child {
+            margin-bottom: 0;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .plan-summary-label {
+            color: #666;
+        }
+
+        .plan-summary-value {
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .plan-summary-total {
+            font-size: 18px;
+            color: #FFC000;
+            font-weight: 800;
+        }
+
+        .payment-method-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-method-section h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0 0 1rem 0;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 10px;
+        }
+
+        .payment-method-card {
+            flex: 1;
+            background: #fff;
+            border: 2.5px solid #ddd;
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .payment-method-card:hover {
+            border-color: #1a1a1a;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .payment-method-card.active-mtn {
+            border-color: #FFC000;
+            background: #fffbe6;
+            box-shadow: 0 4px 12px rgba(255,192,0,0.2);
+        }
+
+        .payment-method-card.active-airtel {
+            border-color: #E40000;
+            background: #fff0f0;
+            box-shadow: 0 4px 12px rgba(228,0,0,0.15);
+        }
+
+        .payment-method-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .payment-method-name {
+            font-weight: 800;
+            color: #1a1a1a;
+            font-size: 13px;
+        }
+
+        .payment-method-desc {
+            font-size: 11px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .phone-input-wrapper {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border: 1.5px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .phone-input-wrapper:focus-within {
+            border-color: #229ED9;
+            box-shadow: 0 0 0 3px rgba(34, 158, 217, 0.1);
+        }
+
+        .phone-prefix {
+            padding: 12px 14px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            background: #f5f5f5;
+            border-right: 1px solid #ddd;
+            white-space: nowrap;
+        }
+
+        .form-input {
+            flex: 1;
+            padding: 12px 14px;
+            border: none;
+            font-family: 'Barlow', sans-serif;
+            font-size: 16px;
+            background: #fff;
+            color: #1a1a1a;
+            outline: none;
+        }
+
+        .form-input::placeholder {
+            color: #999;
+        }
+
+        .form-helper {
+            font-size: 12px;
+            color: #666;
+            margin-top: 6px;
+        }
+
+        .form-error {
+            color: #ff6b6b;
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .form-error.show {
+            display: block;
+        }
+
+        .payment-button {
+            width: 100%;
+            background: #229ED9;
+            border: none;
+            color: #fff;
+            padding: 14px;
+            border-radius: 10px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            letter-spacing: 0.3px;
+        }
+
+        .payment-button.mtn-btn { background: #FFC000; color: #1a1a1a; }
+        .payment-button.mtn-btn:hover { background: #e6ad00; }
+        .payment-button.airtel-btn { background: #E40000; color: #fff; }
+        .payment-button.airtel-btn:hover { background: #c00; }
+
+        .payment-button:active { transform: scale(0.98); }
+        .payment-button:disabled { background: #ccc; cursor: not-allowed; color: #888; }
+
+        /* Waiting Screen Styles */
+        .waiting-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .waiting-screen.active {
+            display: block;
+        }
+
+        .waiting-icon {
+            font-size: 64px;
+            margin-bottom: 1.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        .waiting-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .waiting-subtitle {
+            font-size: 14px;
+            color: #4a4a4a;
+            margin: 0 0 1.5rem 0;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border: 1.5px solid rgba(0,0,0,0.08);
+        }
+
+        .info-box-label {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-box-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+
+        .info-box-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .info-box-row + .info-box-row {
+            border-top: 1px solid #eee;
+        }
+
+        .timer {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .timer-value {
+            font-weight: 800;
+            color: #229ED9;
+        }
+
+        .waiting-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            background: transparent;
+            border: 1.5px solid #ddd;
+            color: #1a1a1a;
+            padding: 12px;
+            border-radius: 10px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:hover { background: #f0f0f0; }
+
+        .success-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .success-screen.active {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 64px;
+            margin-bottom: 1.5rem;
+            animation: checkmark 0.6s ease-out;
+        }
+
+        @keyframes checkmark {
+            0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        .success-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .success-subtitle {
+            font-size: 14px;
+            color: #4a4a4a;
+            margin: 0 0 2rem 0;
+        }
+
+        @media (max-width: 480px) {
+            .payment-container { padding: 1.5rem; }
+            .payment-header h1 { font-size: 24px; }
+            .payment-methods { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="payment-container">
+            <!-- Back Button -->
+            <a href="index.html" class="back-button">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Back to Plans
+            </a>
+
+            <!-- Payment Form Screen -->
+            <div id="paymentForm" class="payment-form">
+                <div class="payment-header">
+                    <h1>Checkout</h1>
+                    <p>Complete your payment securely</p>
+                </div>
+
+                <div class="plan-summary">
+                    <div class="plan-summary-row">
+                        <span class="plan-summary-label">Plan:</span>
+                        <span class="plan-summary-value" id="plan-name">Loading...</span>
+                    </div>
+                    <div class="plan-summary-row">
+                        <span class="plan-summary-label">Amount:</span>
+                        <span class="plan-summary-value" id="plan-price">Loading...</span>
+                    </div>
+                    <div class="plan-summary-row">
+                        <strong class="plan-summary-label">Total:</strong>
+                        <strong class="plan-summary-total" id="plan-total">Loading...</strong>
+                    </div>
+                </div>
+
+                <div class="payment-method-section">
+                    <h3>Choose Payment Method</h3>
+                    <div class="payment-methods">
+                        <div class="payment-method-card active-mtn" id="mtn-card" onclick="selectPaymentMethod('mtn')">
+                            <div class="payment-method-icon">📱</div>
+                            <div class="payment-method-name" style="color: #FFC000;">MTN MoMo</div>
+                            <div class="payment-method-desc">MTN Mobile Money</div>
+                        </div>
+                        <div class="payment-method-card" id="airtel-card" onclick="selectPaymentMethod('airtel')">
+                            <div class="payment-method-icon">📲</div>
+                            <div class="payment-method-name" style="color: #E40000;">Airtel Money</div>
+                            <div class="payment-method-desc">Airtel Mobile Money</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" id="phoneLabel">MTN Mobile Money Number</label>
+                    <div class="phone-input-wrapper">
+                        <div class="phone-prefix" id="phonePrefix">+256 77</div>
+                        <input type="tel" id="phoneInput" class="form-input" placeholder="1234567" inputmode="numeric" maxlength="7">
+                    </div>
+                    <div class="form-helper" id="phoneHelper">Enter your MTN Uganda number (e.g., 0771234567)</div>
+                    <div class="form-error" id="phoneError">Please enter a valid phone number</div>
+                </div>
+
+                <button class="payment-button mtn-btn" id="payBtn" onclick="initiatePayment()">Pay with MTN MoMo</button>
+            </div>
+
+            <!-- Waiting for Approval Screen -->
+            <div id="waitingScreen" class="waiting-screen">
+                <div style="margin-bottom: 1rem; padding: 8px 16px; background: #1a1a1a; border-radius: 10px; display: inline-block;">
+                    <span style="font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.5px;">EVERSEND</span>
+                    <span style="font-size: 13px; font-weight: 800; color: #FFC000; letter-spacing: 0.5px; margin-left: 4px;">FLUTTERWAVE</span>
+                </div>
+                <div class="waiting-icon">📲</div>
+                <h2 class="waiting-title">Waiting for Approval</h2>
+                <p class="waiting-subtitle">
+                    A payment prompt has been sent to your phone.<br>
+                    <strong>Enter your PIN on your phone to approve.</strong>
+                </p>
+
+                <div class="info-box">
+                    <div class="info-box-row">
+                        <div>
+                            <div class="info-box-label">Phone Number</div>
+                            <div class="info-box-value" id="displayPhone">+256 77XXXXXXX</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="info-box-label">Amount</div>
+                            <div class="info-box-value" id="displayAmount">UGX 0</div>
+                        </div>
+                    </div>
+                    <div class="info-box-row">
+                        <div>
+                            <div class="info-box-label">Payment Method</div>
+                            <div class="info-box-value" id="displayMethod" style="font-size: 14px;">MTN MoMo</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="info-box-label">Status</div>
+                            <div class="info-box-value" style="font-size: 14px; color: #f59e0b;">Pending...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timer">
+                    Request expires in: <span class="timer-value" id="timerValue">2:00</span>
+                </div>
+
+                <div class="waiting-buttons">
+                    <button class="btn-secondary" onclick="cancelPayment()">Cancel</button>
+                    <button class="payment-button" style="flex: 2;" onclick="confirmApproval()">I've Approved</button>
+                </div>
+            </div>
+
+            <!-- Success Screen -->
+            <div id="successScreen" class="success-screen">
+                <div class="success-icon">&#10003;</div>
+                <h2 class="success-title">Payment Successful!</h2>
+                <p class="success-subtitle">Your data plan has been activated</p>
+
+                <div class="plan-summary">
+                    <div class="plan-summary-row">
+                        <span class="plan-summary-label">Plan:</span>
+                        <span class="plan-summary-value" id="success-plan-name">-</span>
+                    </div>
+                    <div class="plan-summary-row">
+                        <span class="plan-summary-label">Amount Paid:</span>
+                        <span class="plan-summary-value" id="success-plan-price">-</span>
+                    </div>
+                    <div class="plan-summary-row">
+                        <span class="plan-summary-label">Status:</span>
+                        <span class="plan-summary-value" style="color: #22c55e; font-weight: 800;">Active</span>
+                    </div>
+                </div>
+
+                <button class="payment-button mtn-btn" onclick="completePayment()">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Uganda phone prefixes
+        // MTN Uganda: 077, 078, 076
+        // Airtel Uganda: 070, 075, 074
+        const MTN_PREFIXES = ['77', '78', '76'];
+        const AIRTEL_PREFIXES = ['70', '75', '74'];
+
+        let selectedMethod = 'mtn';
+        let timerInterval = null;
+        let timeRemaining = 120;
+
+        // Load plan details from sessionStorage
+        window.addEventListener('DOMContentLoaded', () => {
+            const planName = sessionStorage.getItem('planName') || 'Unknown Plan';
+            const planPrice = sessionStorage.getItem('planPrice') || 'UGX 0';
+            
+            document.getElementById('plan-name').textContent = planName;
+            document.getElementById('plan-price').textContent = planPrice;
+            document.getElementById('plan-total').textContent = planPrice;
+            document.getElementById('displayAmount').textContent = planPrice;
+            document.getElementById('success-plan-name').textContent = planName;
+            document.getElementById('success-plan-price').textContent = planPrice;
+        });
+
+        function selectPaymentMethod(method) {
+            selectedMethod = method;
+            const mtnCard = document.getElementById('mtn-card');
+            const airtelCard = document.getElementById('airtel-card');
+            const phoneLabel = document.getElementById('phoneLabel');
+            const phonePrefix = document.getElementById('phonePrefix');
+            const phoneHelper = document.getElementById('phoneHelper');
+            const phoneInput = document.getElementById('phoneInput');
+            const payBtn = document.getElementById('payBtn');
+
+            // Reset cards
+            mtnCard.className = 'payment-method-card';
+            airtelCard.className = 'payment-method-card';
+
+            if (method === 'mtn') {
+                mtnCard.classList.add('active-mtn');
+                phoneLabel.textContent = 'MTN Mobile Money Number';
+                phonePrefix.textContent = '+256 77';
+                phoneHelper.textContent = 'Enter your MTN Uganda number (e.g., 0771234567)';
+                phoneInput.placeholder = '1234567';
+                payBtn.textContent = 'Pay with MTN MoMo';
+                payBtn.className = 'payment-button mtn-btn';
+            } else {
+                airtelCard.classList.add('active-airtel');
+                phoneLabel.textContent = 'Airtel Money Number';
+                phonePrefix.textContent = '+256 70';
+                phoneHelper.textContent = 'Enter your Airtel Uganda number (e.g., 0701234567)';
+                phoneInput.placeholder = '1234567';
+                payBtn.textContent = 'Pay with Airtel Money';
+                payBtn.className = 'payment-button airtel-btn';
+            }
+
+            // Clear input and errors
+            phoneInput.value = '';
+            document.getElementById('phoneError').classList.remove('show');
+        }
+
+        function validatePhoneNumber(phone) {
+            const cleaned = phone.replace(/\D/g, '');
+            return cleaned.length === 7;
+        }
+
+        function initiatePayment() {
+            const phoneInput = document.getElementById('phoneInput').value.trim();
+            const phoneError = document.getElementById('phoneError');
+
+            if (!validatePhoneNumber(phoneInput)) {
+                phoneError.textContent = 'Please enter a valid 7-digit phone number';
+                phoneError.classList.add('show');
+                return;
+            }
+
+            phoneError.classList.remove('show');
+
+            // Build full phone number with prefix
+            let prefix = selectedMethod === 'mtn' ? '77' : '70';
+            const fullNumber = '+256 ' + prefix + phoneInput;
+            
+            document.getElementById('displayPhone').textContent = fullNumber;
+            document.getElementById('displayMethod').textContent = selectedMethod === 'mtn' ? 'MTN MoMo' : 'Airtel Money';
+
+            // Hide form and show waiting screen
+            document.getElementById('paymentForm').style.display = 'none';
+            document.getElementById('waitingScreen').classList.add('active');
+
+            // Start timer
+            startTimer();
+        }
+
+        function startTimer() {
+            timeRemaining = 120;
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    timeoutPayment();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('timerValue').textContent = 
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function cancelPayment() {
+            clearInterval(timerInterval);
+            document.getElementById('waitingScreen').classList.remove('active');
+            document.getElementById('paymentForm').style.display = 'block';
+        }
+
+        function confirmApproval() {
+            clearInterval(timerInterval);
+            document.getElementById('waitingScreen').classList.remove('active');
+            document.getElementById('successScreen').classList.add('active');
+        }
+
+        function timeoutPayment() {
+            alert('Payment request expired. Please try again.');
+            cancelPayment();
+        }
+
+        function completePayment() {
+            sessionStorage.removeItem('planName');
+            sessionStorage.removeItem('planPrice');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

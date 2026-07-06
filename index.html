@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starlink to Mobile — MTN Uganda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: #FFC000;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            margin: 0;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1px);
+            background-size: 28px 28px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .wrapper { position: relative; z-index: 1; width: 100%; max-width: 900px; }
+        .main-card {
+            background: #F5C200;
+            border-radius: 20px;
+            padding: 1.75rem 1.75rem 1.5rem;
+            border: 1.5px solid rgba(0,0,0,0.1);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+        }
+        .mtn-pill {
+            border: 2.5px solid #1a1a1a;
+            border-radius: 100px;
+            padding: 5px 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .plan-card {
+            background: #1a1a1a;
+            border-radius: 14px;
+            padding: 1.1rem 1rem 1rem;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.18s cubic-bezier(.34,1.56,.64,1), box-shadow 0.18s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .plan-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,192,0,0.06) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .plan-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 12px 32px rgba(0,0,0,0.35); }
+        .plan-card:active { transform: scale(0.97); }
+        .plan-card.popular { border-color: #FFC000; }
+        .badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            padding: 3px 9px;
+            border-radius: 100px;
+            background: #FFC000;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .plan-card.popular .badge { background: #fff; color: #1a1a1a; }
+        .plan-icon { font-size: 22px; margin-bottom: 8px; display: block; }
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.22s ease;
+        }
+        .overlay.active { opacity: 1; pointer-events: all; }
+        .modal {
+            background: #1e1e1e;
+            border-radius: 18px;
+            padding: 1.75rem;
+            width: 360px;
+            max-width: 95vw;
+            transform: scale(0.92) translateY(20px);
+            transition: transform 0.25s cubic-bezier(.34,1.56,.64,1);
+            border: 1.5px solid rgba(255,255,255,0.08);
+        }
+        .overlay.active .modal { transform: scale(1) translateY(0); }
+        .modal-feature-box {
+            background: #272727;
+            border-radius: 10px;
+            padding: 1rem 1.1rem;
+            margin: 1.1rem 0;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .modal-feature-box li {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            font-size: 13px;
+            color: #ddd;
+            padding: 4px 0;
+        }
+        .modal-feature-box li::before {
+            content: '\2022';
+            color: #FFC000;
+            font-size: 18px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .btn-cancel {
+            flex: 1;
+            background: transparent;
+            border: 1.5px solid #444;
+            color: #bbb;
+            padding: 11px 0;
+            border-radius: 9px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .btn-cancel:hover { background: #2e2e2e; border-color: #666; }
+        .btn-pay {
+            flex: 2;
+            background: #229ED9;
+            border: none;
+            color: #fff;
+            padding: 11px 0;
+            border-radius: 9px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            transition: background 0.15s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            text-decoration: none;
+        }
+        .btn-pay:hover { background: #1a8cbf; }
+        .btn-pay:active { transform: scale(0.97); }
+        
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .plans-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 480px) {
+            .plans-grid { grid-template-columns: 1fr; }
+            .main-card { padding: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="main-card">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-5">
+                <div>
+                    <h1 style="font-family:'Barlow Condensed',sans-serif; font-size:26px; font-weight:900; color:#1a1a1a; letter-spacing:-0.3px;">Starlink to Mobile</h1>
+                    <p style="font-size:13px; color:#4a4a4a; margin-top:2px;">Fast data powered by MTN Uganda</p>
+                </div>
+                <div class="mtn-pill">
+                    <span style="font-size:11px; color:#555; font-weight:600;">Powered by</span>
+                    <span style="font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:900; color:#1a1a1a; letter-spacing:1px;">MTN</span>
+                </div>
+            </div>
+
+            <!-- Plans grid -->
+            <div class="plans-grid">
+                <!-- Plan 1: 5GB - 15k -->
+                <div class="plan-card" onclick="openModal('5GB Data','Starter','7-day plan','UGX 15,000',['5GB Starlink to Mobile data','Valid for 7 days','Fair usage policy applies'])">
+                    <div class="plan-icon">
+                        <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2" fill="#FFC000"></circle><circle cx="12" cy="8" r="2" fill="#FFC000" opacity=".6"></circle><circle cx="19" cy="5" r="2" fill="#FFC000" opacity=".3"></circle></svg>
+                    </div>
+                    <div class="badge">Starter</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; color:#fff; margin-bottom:2px;">5GB Data</div>
+                    <div style="font-size:12px; color:#888; margin-bottom:10px;">7-day plan</div>
+                    <div style="font-size:19px; font-weight:800; color:#FFC000; font-family:'Barlow Condensed',sans-serif; margin-bottom:6px;">UGX 15,000</div>
+                    <div style="font-size:11px; color:#FFC000; opacity:.75;">View details & pay &rarr;</div>
+                </div>
+
+                <!-- Plan 2: 12GB - 30k -->
+                <div class="plan-card" onclick="openModal('12GB Data','Light use','14-day plan','UGX 30,000',['12GB Starlink to Mobile data','Valid for 14 days','Fair usage policy applies'])">
+                    <div class="plan-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFC000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><circle cx="12" cy="20" r="1" fill="#FFC000" stroke="none"></circle></svg>
+                    </div>
+                    <div class="badge">Light use</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; color:#fff; margin-bottom:2px;">12GB Data</div>
+                    <div style="font-size:12px; color:#888; margin-bottom:10px;">14-day plan</div>
+                    <div style="font-size:19px; font-weight:800; color:#FFC000; font-family:'Barlow Condensed',sans-serif; margin-bottom:6px;">UGX 30,000</div>
+                    <div style="font-size:11px; color:#FFC000; opacity:.75;">View details & pay &rarr;</div>
+                </div>
+
+                <!-- Plan 3: 20GB - 40k -->
+                <div class="plan-card" onclick="openModal('20GB Data','Balanced','21-day plan','UGX 40,000',['20GB Starlink to Mobile data','Valid for 21 days','Fair usage policy applies'])">
+                    <div class="plan-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFC000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+                    </div>
+                    <div class="badge">Balanced</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; color:#fff; margin-bottom:2px;">20GB Data</div>
+                    <div style="font-size:12px; color:#888; margin-bottom:10px;">21-day plan</div>
+                    <div style="font-size:19px; font-weight:800; color:#FFC000; font-family:'Barlow Condensed',sans-serif; margin-bottom:6px;">UGX 40,000</div>
+                    <div style="font-size:11px; color:#FFC000; opacity:.75;">View details & pay &rarr;</div>
+                </div>
+
+                <!-- Plan 4: 30GB - 50k -->
+                <div class="plan-card" onclick="openModal('30GB Data','Heavy use','30-day plan','UGX 50,000',['30GB Starlink to Mobile data','Valid for 30 days','Fair usage policy applies'])">
+                    <div class="plan-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFC000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                    </div>
+                    <div class="badge">Heavy use</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; color:#fff; margin-bottom:2px;">30GB Data</div>
+                    <div style="font-size:12px; color:#888; margin-bottom:10px;">30-day plan</div>
+                    <div style="font-size:19px; font-weight:800; color:#FFC000; font-family:'Barlow Condensed',sans-serif; margin-bottom:6px;">UGX 50,000</div>
+                    <div style="font-size:11px; color:#FFC000; opacity:.75;">View details & pay &rarr;</div>
+                </div>
+
+                <!-- Plan 5: 45GB - 70k -->
+                <div class="plan-card" onclick="openModal('45GB Data','Power user','30-day plan','UGX 70,000',['45GB Starlink to Mobile data','Valid for 30 days','Fair usage policy applies'])">
+                    <div class="plan-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFC000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                    </div>
+                    <div class="badge">Power user</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; color:#fff; margin-bottom:2px;">45GB Data</div>
+                    <div style="font-size:12px; color:#888; margin-bottom:10px;">30-day plan</div>
+                    <div style="font-size:19px; font-weight:800; color:#FFC000; font-family:'Barlow Condensed',sans-serif; margin-bottom:6px;">UGX 70,000</div>
+                    <div style="font-size:11px; color:#FFC000; opacity:.75;">View details & pay &rarr;</div>
+                </div>
+
+                <!-- Plan 6: 60GB - 80k -->
+                <div class="plan-card popular" onclick="openModal('60GB Data','Most popular','30-day plan','UGX 80,000',['60GB Starlink to Mobile data','Valid for 30 days','Fair usage policy applies'])">
+                    <div class="plan-icon">
+                        <svg width="22" height="14" viewBox="0 0 50 30" fill="none"><path d="M14 15c0-5.5 4-9 8-9s6 3 8 9 4 9 8 9 8-3.5 8-9-4-9-8-9-6 3-8 9" stroke="#FFC000" stroke-width="3.5" stroke-linecap="round" fill="none"></path><path d="M6 15c0-5.5 4-9 8-9s6 3 8 9 4 9 8 9 8-3.5 8-9-4-9-8-9" stroke="#FFC000" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".4"></path></svg>
+                    </div>
+                    <div class="badge">Most popular</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; color:#fff; margin-bottom:2px;">60GB Data</div>
+                    <div style="font-size:12px; color:#888; margin-bottom:10px;">30-day plan</div>
+                    <div style="font-size:19px; font-weight:800; color:#FFC000; font-family:'Barlow Condensed',sans-serif; margin-bottom:6px;">UGX 80,000</div>
+                    <div style="font-size:11px; color:#FFC000; opacity:.75;">View details & pay &rarr;</div>
+                </div>
+
+                <!-- Plan 7: 75GB - 100k -->
+                <div class="plan-card" onclick="openModal('75GB Data','Premium','30-day plan','UGX 100,000',['75GB Starlink to Mobile data','Valid for 30 days','Fair usage policy applies'])">
+                    <div class="plan-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFC000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                    <div class="badge">Premium</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; color:#fff; margin-bottom:2px;">75GB Data</div>
+                    <div style="font-size:12px; color:#888; margin-bottom:10px;">30-day plan</div>
+                    <div style="font-size:19px; font-weight:800; color:#FFC000; font-family:'Barlow Condensed',sans-serif; margin-bottom:6px;">UGX 100,000</div>
+                    <div style="font-size:11px; color:#FFC000; opacity:.75;">View details & pay &rarr;</div>
+                </div>
+
+                <!-- Plan 8: 100GB - 150k -->
+                <div class="plan-card popular" onclick="openModal('100GB Data','Ultimate','30-day plan','UGX 150,000',['100GB Starlink to Mobile data','Valid for 30 days','Fair usage policy applies'])">
+                    <div class="plan-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFC000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+                    </div>
+                    <div class="badge">Ultimate</div>
+                    <div style="font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; color:#fff; margin-bottom:2px;">100GB Data</div>
+                    <div style="font-size:12px; color:#888; margin-bottom:10px;">30-day plan</div>
+                    <div style="font-size:19px; font-weight:800; color:#FFC000; font-family:'Barlow Condensed',sans-serif; margin-bottom:6px;">UGX 150,000</div>
+                    <div style="font-size:11px; color:#FFC000; opacity:.75;">View details & pay &rarr;</div>
+                </div>
+            </div>
+
+            <p style="font-size:11.5px; color:#4a4a4a; margin-top:1.1rem; line-height:1.6;">
+                Selecting a plan opens order details.<br>
+                Complete your purchase via Mobile Money.
+            </p>
+        </div>
+    </div>
+
+    <!-- Plan details modal -->
+    <div class="overlay" id="overlay" onclick="handleOverlayClick(event)">
+        <div class="modal" id="modal">
+            <h2 id="modal-title" style="font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:900; color:#fff; letter-spacing:-0.2px;"></h2>
+            <p id="modal-subtitle" style="font-size:13px; color:#999; margin-top:4px;"></p>
+            <div class="modal-feature-box">
+                <ul id="modal-features" style="list-style:none; padding:0; margin:0;"></ul>
+            </div>
+            <div style="display:flex; gap:10px; margin-top:0.2rem;">
+                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <a id="pay-link" href="#" class="btn-pay">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path></svg>
+                    Pay
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const overlay = document.getElementById('overlay');
+        let currentPlan = {};
+
+        function openModal(name, badge, duration, price, features) {
+            currentPlan = { name, badge, duration, price, features };
+            document.getElementById('modal-title').textContent = `${name} Plan`;
+            document.getElementById('modal-subtitle').textContent = `Fast Starlink data \u2014 ${duration}.`;
+            document.getElementById('modal-features').innerHTML = features.map(feature => `<li>${feature}</li>`).join('');
+            document.getElementById('pay-link').onclick = (e) => {
+                e.preventDefault();
+                proceedToPayment(name, price);
+            };
+            overlay.classList.add('active');
+        }
+
+        function proceedToPayment(planName, price) {
+            sessionStorage.setItem('planName', planName);
+            sessionStorage.setItem('planPrice', price);
+            window.location.href = 'payment.html';
+        }
+
+        function closeModal() {
+            overlay.classList.remove('active');
+        }
+
+        function handleOverlayClick(event) {
+            if (event.target === overlay) {
+                closeModal();
+            }
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
