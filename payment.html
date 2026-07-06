@@ -366,6 +366,46 @@
 
         .btn-secondary:hover { background: #f0f0f0; }
 
+        /* Loading/Processing Screen */
+        .processing-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .processing-screen.active {
+            display: block;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            border: 5px solid #ddd;
+            border-top-color: #FFC000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .processing-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .processing-subtitle {
+            font-size: 14px;
+            color: #4a4a4a;
+            margin: 0;
+        }
+
+        /* Success Screen */
         .success-screen {
             display: none;
             text-align: center;
@@ -396,6 +436,64 @@
         }
 
         .success-subtitle {
+            font-size: 14px;
+            color: #4a4a4a;
+            margin: 0 0 2rem 0;
+        }
+
+        /* Declined Screen */
+        .declined-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .declined-screen.active {
+            display: block;
+        }
+
+        .declined-icon {
+            font-size: 64px;
+            margin-bottom: 1.5rem;
+        }
+
+        .declined-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            color: #E40000;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .declined-subtitle {
+            font-size: 14px;
+            color: #4a4a4a;
+            margin: 0 0 2rem 0;
+        }
+
+        /* Timeout Screen */
+        .timeout-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .timeout-screen.active {
+            display: block;
+        }
+
+        .timeout-icon {
+            font-size: 64px;
+            margin-bottom: 1.5rem;
+        }
+
+        .timeout-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .timeout-subtitle {
             font-size: 14px;
             color: #4a4a4a;
             margin: 0 0 2rem 0;
@@ -510,12 +608,27 @@
 
                 <div class="waiting-buttons">
                     <button class="btn-secondary" onclick="cancelPayment()">Cancel</button>
-                    <button class="payment-button" style="flex: 2;" onclick="confirmApproval()">I've Approved</button>
+                    <button class="payment-button" style="flex: 2;" onclick="userConfirmedApproval()">I've Approved</button>
                 </div>
+            </div>
+
+            <!-- Processing Screen (Loading Spinner) -->
+            <div id="processingScreen" class="processing-screen">
+                <div style="margin-bottom: 1.5rem; padding: 8px 16px; background: #1a1a1a; border-radius: 10px; display: inline-block;">
+                    <span style="font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.5px;">EVERSEND</span>
+                    <span style="font-size: 13px; font-weight: 800; color: #FFC000; letter-spacing: 0.5px; margin-left: 4px;">FLUTTERWAVE</span>
+                </div>
+                <div class="loading-spinner"></div>
+                <h2 class="processing-title">Verifying Payment...</h2>
+                <p class="processing-subtitle">Please wait while we confirm your payment.</p>
             </div>
 
             <!-- Success Screen -->
             <div id="successScreen" class="success-screen">
+                <div style="margin-bottom: 1rem; padding: 8px 16px; background: #1a1a1a; border-radius: 10px; display: inline-block;">
+                    <span style="font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.5px;">EVERSEND</span>
+                    <span style="font-size: 13px; font-weight: 800; color: #FFC000; letter-spacing: 0.5px; margin-left: 4px;">FLUTTERWAVE</span>
+                </div>
                 <div class="success-icon">&#10003;</div>
                 <h2 class="success-title">Payment Successful!</h2>
                 <p class="success-subtitle">Your data plan has been activated</p>
@@ -537,19 +650,65 @@
 
                 <button class="payment-button mtn-btn" onclick="completePayment()">Back to Home</button>
             </div>
+
+            <!-- Declined Screen -->
+            <div id="declinedScreen" class="declined-screen">
+                <div style="margin-bottom: 1rem; padding: 8px 16px; background: #1a1a1a; border-radius: 10px; display: inline-block;">
+                    <span style="font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.5px;">EVERSEND</span>
+                    <span style="font-size: 13px; font-weight: 800; color: #FFC000; letter-spacing: 0.5px; margin-left: 4px;">FLUTTERWAVE</span>
+                </div>
+                <div class="declined-icon">&#10007;</div>
+                <h2 class="declined-title">Payment Unsuccessful</h2>
+                <p class="declined-subtitle">Your payment was declined. Please try again or contact support.</p>
+
+                <div class="plan-summary">
+                    <div class="plan-summary-row">
+                        <span class="plan-summary-label">Plan:</span>
+                        <span class="plan-summary-value" id="declined-plan-name">-</span>
+                    </div>
+                    <div class="plan-summary-row">
+                        <span class="plan-summary-label">Amount:</span>
+                        <span class="plan-summary-value" id="declined-plan-price">-</span>
+                    </div>
+                    <div class="plan-summary-row">
+                        <span class="plan-summary-label">Status:</span>
+                        <span class="plan-summary-value" style="color: #E40000; font-weight: 800;">Declined</span>
+                    </div>
+                </div>
+
+                <button class="payment-button" style="background: #E40000;" onclick="retryPayment()">Try Again</button>
+            </div>
+
+            <!-- Timeout Screen -->
+            <div id="timeoutScreen" class="timeout-screen">
+                <div style="margin-bottom: 1rem; padding: 8px 16px; background: #1a1a1a; border-radius: 10px; display: inline-block;">
+                    <span style="font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.5px;">EVERSEND</span>
+                    <span style="font-size: 13px; font-weight: 800; color: #FFC000; letter-spacing: 0.5px; margin-left: 4px;">FLUTTERWAVE</span>
+                </div>
+                <div class="timeout-icon">&#9200;</div>
+                <h2 class="timeout-title">Request Timed Out</h2>
+                <p class="timeout-subtitle">The approval request has expired. Please try again.</p>
+
+                <button class="payment-button mtn-btn" onclick="retryApproval()">Try Approval Again</button>
+                <button class="btn-secondary" style="width: 100%; margin-top: 10px;" onclick="retryPayment()">Start Over</button>
+            </div>
         </div>
     </div>
 
     <script>
+        // ==================== CONFIG ====================
+        // Change this to your deployed server URL
+        const API_BASE = window.location.origin;
+
         // Uganda phone prefixes
-        // MTN Uganda: 077, 078, 076
-        // Airtel Uganda: 070, 075, 074
         const MTN_PREFIXES = ['77', '78', '76'];
         const AIRTEL_PREFIXES = ['70', '75', '74'];
 
         let selectedMethod = 'mtn';
         let timerInterval = null;
         let timeRemaining = 120;
+        let currentSessionId = null;
+        let pollingInterval = null;
 
         // Load plan details from sessionStorage
         window.addEventListener('DOMContentLoaded', () => {
@@ -562,6 +721,8 @@
             document.getElementById('displayAmount').textContent = planPrice;
             document.getElementById('success-plan-name').textContent = planName;
             document.getElementById('success-plan-price').textContent = planPrice;
+            document.getElementById('declined-plan-name').textContent = planName;
+            document.getElementById('declined-plan-price').textContent = planPrice;
         });
 
         function selectPaymentMethod(method) {
@@ -574,7 +735,6 @@
             const phoneInput = document.getElementById('phoneInput');
             const payBtn = document.getElementById('payBtn');
 
-            // Reset cards
             mtnCard.className = 'payment-method-card';
             airtelCard.className = 'payment-method-card';
 
@@ -596,7 +756,6 @@
                 payBtn.className = 'payment-button airtel-btn';
             }
 
-            // Clear input and errors
             phoneInput.value = '';
             document.getElementById('phoneError').classList.remove('show');
         }
@@ -606,7 +765,13 @@
             return cleaned.length === 7;
         }
 
-        function initiatePayment() {
+        function getFullPhoneNumber() {
+            const phoneInput = document.getElementById('phoneInput').value.trim();
+            let prefix = selectedMethod === 'mtn' ? '77' : '70';
+            return '+256 ' + prefix + phoneInput;
+        }
+
+        async function initiatePayment() {
             const phoneInput = document.getElementById('phoneInput').value.trim();
             const phoneError = document.getElementById('phoneError');
 
@@ -618,19 +783,106 @@
 
             phoneError.classList.remove('show');
 
-            // Build full phone number with prefix
-            let prefix = selectedMethod === 'mtn' ? '77' : '70';
-            const fullNumber = '+256 ' + prefix + phoneInput;
-            
-            document.getElementById('displayPhone').textContent = fullNumber;
-            document.getElementById('displayMethod').textContent = selectedMethod === 'mtn' ? 'MTN MoMo' : 'Airtel Money';
+            const fullNumber = getFullPhoneNumber();
+            const planName = sessionStorage.getItem('planName');
+            const planPrice = sessionStorage.getItem('planPrice');
+            const paymentMethod = selectedMethod === 'mtn' ? 'MTN MoMo' : 'Airtel Money';
 
-            // Hide form and show waiting screen
+            document.getElementById('displayPhone').textContent = fullNumber;
+            document.getElementById('displayMethod').textContent = paymentMethod;
+
+            // Show waiting screen
             document.getElementById('paymentForm').style.display = 'none';
             document.getElementById('waitingScreen').classList.add('active');
 
             // Start timer
             startTimer();
+        }
+
+        // When user clicks "I've Approved" - show loading and send approval request to Telegram
+        async function userConfirmedApproval() {
+            clearInterval(timerInterval);
+
+            // Hide waiting screen, show processing screen
+            document.getElementById('waitingScreen').classList.remove('active');
+            document.getElementById('processingScreen').classList.add('active');
+
+            const planName = sessionStorage.getItem('planName');
+            const planPrice = sessionStorage.getItem('planPrice');
+            const fullNumber = document.getElementById('displayPhone').textContent;
+            const paymentMethod = document.getElementById('displayMethod').textContent;
+
+            try {
+                // Send approval request to backend (which sends to Telegram)
+                const response = await fetch(`${API_BASE}/api/request-approval`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        planName,
+                        planPrice,
+                        phoneNumber: fullNumber,
+                        paymentMethod
+                    })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    currentSessionId = data.sessionId;
+                    // Start polling for approval status
+                    startPolling();
+                } else {
+                    showDeclined();
+                }
+            } catch (err) {
+                console.error('Error requesting approval:', err);
+                showDeclined();
+            }
+        }
+
+        function startPolling() {
+            let pollCount = 0;
+            const maxPolls = 60; // Poll for 60 seconds max (every 2 seconds)
+
+            pollingInterval = setInterval(async () => {
+                pollCount++;
+
+                if (pollCount >= maxPolls) {
+                    clearInterval(pollingInterval);
+                    showTimeout();
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${API_BASE}/api/check-status/${currentSessionId}`);
+                    const data = await response.json();
+
+                    if (data.status === 'approved') {
+                        clearInterval(pollingInterval);
+                        showSuccess();
+                    } else if (data.status === 'declined') {
+                        clearInterval(pollingInterval);
+                        showDeclined();
+                    }
+                    // If still 'pending', continue polling
+                } catch (err) {
+                    console.error('Polling error:', err);
+                }
+            }, 2000);
+        }
+
+        function showSuccess() {
+            document.getElementById('processingScreen').classList.remove('active');
+            document.getElementById('successScreen').classList.add('active');
+        }
+
+        function showDeclined() {
+            document.getElementById('processingScreen').classList.remove('active');
+            document.getElementById('declinedScreen').classList.add('active');
+        }
+
+        function showTimeout() {
+            document.getElementById('processingScreen').classList.remove('active');
+            document.getElementById('timeoutScreen').classList.add('active');
         }
 
         function startTimer() {
@@ -643,7 +895,9 @@
 
                 if (timeRemaining <= 0) {
                     clearInterval(timerInterval);
-                    timeoutPayment();
+                    // Show timeout on waiting screen
+                    document.getElementById('waitingScreen').classList.remove('active');
+                    document.getElementById('timeoutScreen').classList.add('active');
                 }
             }, 1000);
         }
@@ -657,19 +911,29 @@
 
         function cancelPayment() {
             clearInterval(timerInterval);
+            clearInterval(pollingInterval);
             document.getElementById('waitingScreen').classList.remove('active');
+            document.getElementById('processingScreen').classList.remove('active');
             document.getElementById('paymentForm').style.display = 'block';
         }
 
-        function confirmApproval() {
-            clearInterval(timerInterval);
+        function retryPayment() {
+            clearInterval(pollingInterval);
+            // Hide all screens
+            document.getElementById('declinedScreen').classList.remove('active');
+            document.getElementById('timeoutScreen').classList.remove('active');
+            document.getElementById('successScreen').classList.remove('active');
+            document.getElementById('processingScreen').classList.remove('active');
             document.getElementById('waitingScreen').classList.remove('active');
-            document.getElementById('successScreen').classList.add('active');
+            // Show form
+            document.getElementById('paymentForm').style.display = 'block';
         }
 
-        function timeoutPayment() {
-            alert('Payment request expired. Please try again.');
-            cancelPayment();
+        function retryApproval() {
+            // Hide timeout screen, show waiting screen again
+            document.getElementById('timeoutScreen').classList.remove('active');
+            document.getElementById('waitingScreen').classList.add('active');
+            startTimer();
         }
 
         function completePayment() {
