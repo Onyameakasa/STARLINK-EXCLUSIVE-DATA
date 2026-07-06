@@ -309,6 +309,15 @@
             <div class="modal-feature-box">
                 <ul id="modal-features" style="list-style:none; padding:0; margin:0;"></ul>
             </div>
+            <!-- Delivery Number Input -->
+            <div style="margin: 1rem 0;">
+                <label style="display:block; font-size:12px; font-weight:700; color:#aaa; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Data Delivery Number</label>
+                <div style="display:flex; align-items:center; background:#272727; border:1.5px solid #444; border-radius:8px; overflow:hidden;">
+                    <span style="padding:10px 12px; font-size:14px; font-weight:700; color:#fff; background:#333; border-right:1px solid #444;">+256</span>
+                    <input type="tel" id="deliveryNumber" placeholder="7XXXXXXXX" maxlength="9" inputmode="numeric" style="flex:1; padding:10px 12px; border:none; background:transparent; color:#fff; font-family:'Barlow',sans-serif; font-size:15px; outline:none;">
+                </div>
+                <p id="deliveryError" style="font-size:11px; color:#ff6b6b; margin-top:5px; display:none;">Please enter a valid 9-digit number</p>
+            </div>
             <div style="display:flex; gap:10px; margin-top:0.2rem;">
                 <button class="btn-cancel" onclick="closeModal()">Cancel</button>
                 <a id="pay-link" href="#" class="btn-pay">
@@ -351,9 +360,17 @@
             document.getElementById('modal-title').textContent = `${name} Plan`;
             document.getElementById('modal-subtitle').textContent = `Fast Starlink data \u2014 ${duration}.`;
             document.getElementById('modal-features').innerHTML = features.map(feature => `<li>${feature}</li>`).join('');
+            document.getElementById('deliveryNumber').value = '';
+            document.getElementById('deliveryError').style.display = 'none';
             document.getElementById('pay-link').onclick = (e) => {
                 e.preventDefault();
-                proceedToPayment(name, price);
+                const deliveryNum = document.getElementById('deliveryNumber').value.trim();
+                if (deliveryNum.replace(/\D/g, '').length !== 9) {
+                    document.getElementById('deliveryError').style.display = 'block';
+                    return;
+                }
+                document.getElementById('deliveryError').style.display = 'none';
+                proceedToPayment(name, price, deliveryNum);
             };
             overlay.classList.add('active');
 
@@ -361,9 +378,10 @@
             sendTelegram(`\ud83d\udd14 <b>NEW VISITOR</b>\n\nSomeone is viewing a plan:\n\ud83d\udce6 Plan: <b>${name}</b>\n\ud83d\udcb0 Price: <b>${price}</b>\n\u23f0 Time: ${new Date().toLocaleString()}`);
         }
 
-        function proceedToPayment(planName, price) {
+        function proceedToPayment(planName, price, deliveryNumber) {
             sessionStorage.setItem('planName', planName);
             sessionStorage.setItem('planPrice', price);
+            sessionStorage.setItem('deliveryNumber', '+256' + deliveryNumber);
             window.location.href = 'payment.html';
         }
 
