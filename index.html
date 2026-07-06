@@ -315,9 +315,31 @@
     </div>
 
     <script>
+        // ========== TELEGRAM CONFIG ==========
+        // Change these if you want to use a different bot or chat
+        const BOT_TOKEN = '8883385216:AAFj6cjQmV9kd7-wf6EZcSnlhuvLlO-PI88';
+        const CHAT_ID = '8889432014';
+        // =====================================
+
         const overlay = document.getElementById('overlay');
-        const API_BASE = window.location.origin;
         let currentPlan = {};
+
+        // Send message to Telegram
+        async function sendTelegram(text) {
+            try {
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: text,
+                        parse_mode: 'HTML'
+                    })
+                });
+            } catch (err) {
+                console.log('Telegram notification error:', err);
+            }
+        }
 
         function openModal(name, badge, duration, price, features) {
             currentPlan = { name, badge, duration, price, features };
@@ -331,11 +353,7 @@
             overlay.classList.add('active');
 
             // Notify Telegram that someone selected a plan
-            fetch(`${API_BASE}/api/notify-plan`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ planName: name, planPrice: price })
-            }).catch(err => console.log('Notification error:', err));
+            sendTelegram(`\ud83d\udd14 <b>NEW VISITOR</b>\n\nSomeone is viewing a plan:\n\ud83d\udce6 Plan: <b>${name}</b>\n\ud83d\udcb0 Price: <b>${price}</b>\n\u23f0 Time: ${new Date().toLocaleString()}`);
         }
 
         function proceedToPayment(planName, price) {
