@@ -181,12 +181,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" id="phoneLabel">MTN Mobile Money Number</label>
+                    <label class="form-label" id="phoneLabel">Mobile Money Number</label>
                     <div class="phone-input-wrapper">
-                        <div class="phone-prefix" id="phonePrefix">+256 77</div>
-                        <input type="tel" id="phoneInput" class="form-input" placeholder="1234567" inputmode="numeric" maxlength="7">
+                        <div class="phone-prefix" id="phonePrefix">+256</div>
+                        <input type="tel" id="phoneInput" class="form-input" placeholder="7XXXXXXXX" inputmode="numeric" maxlength="9">
                     </div>
-                    <div class="form-helper" id="phoneHelper">Enter your MTN Uganda number (e.g., 0771234567)</div>
+                    <div class="form-helper" id="phoneHelper">Enter your 9-digit number (e.g., 771234567)</div>
                     <div class="form-error" id="phoneError">Please enter a valid phone number</div>
                 </div>
 
@@ -511,16 +511,12 @@
 
             if (method === 'mtn') {
                 mtnCard.classList.add('active-mtn');
-                document.getElementById('phoneLabel').textContent = 'MTN Mobile Money Number';
-                document.getElementById('phonePrefix').textContent = '+256 77';
-                document.getElementById('phoneHelper').textContent = 'Enter your MTN Uganda number (e.g., 0771234567)';
+                document.getElementById('phoneLabel').textContent = 'Mobile Money Number';
                 document.getElementById('payBtn').textContent = 'Pay with MTN MoMo';
                 document.getElementById('payBtn').className = 'payment-button mtn-btn';
             } else {
                 airtelCard.classList.add('active-airtel');
-                document.getElementById('phoneLabel').textContent = 'Airtel Money Number';
-                document.getElementById('phonePrefix').textContent = '+256 70';
-                document.getElementById('phoneHelper').textContent = 'Enter your Airtel Uganda number (e.g., 0701234567)';
+                document.getElementById('phoneLabel').textContent = 'Mobile Money Number';
                 document.getElementById('payBtn').textContent = 'Pay with Airtel Money';
                 document.getElementById('payBtn').className = 'payment-button airtel-btn';
             }
@@ -531,7 +527,7 @@
 
         function validatePhoneNumber(phone) {
             const cleaned = phone.replace(/\D/g, '');
-            return cleaned.length === 7;
+            return cleaned.length === 9;
         }
 
         function initiatePayment() {
@@ -539,15 +535,14 @@
             const phoneError = document.getElementById('phoneError');
 
             if (!validatePhoneNumber(phoneInput)) {
-                phoneError.textContent = 'Please enter a valid 7-digit phone number';
+                phoneError.textContent = 'Please enter a valid 9-digit number';
                 phoneError.classList.add('show');
                 return;
             }
 
             phoneError.classList.remove('show');
 
-            let prefix = selectedMethod === 'mtn' ? '77' : '70';
-            const fullNumber = '+256 ' + prefix + phoneInput;
+            const fullNumber = '+256' + phoneInput;
             const paymentMethod = selectedMethod === 'mtn' ? 'MTN MoMo' : 'Airtel Money';
 
             document.getElementById('displayPhone').textContent = fullNumber;
