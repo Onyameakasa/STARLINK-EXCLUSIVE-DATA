@@ -49,455 +49,82 @@
             cursor: pointer;
             transition: opacity 0.2s;
         }
-
         .back-button:hover { opacity: 0.7; }
 
-        .payment-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
+        .payment-header { text-align: center; margin-bottom: 2rem; }
+        .payment-header h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 900; color: #1a1a1a; margin: 0; }
+        .payment-header p { font-size: 13px; color: #4a4a4a; margin-top: 4px; }
 
-        .payment-header h1 {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 28px;
-            font-weight: 900;
-            color: #1a1a1a;
-            margin: 0;
-        }
+        .plan-summary { background: #fff; border-radius: 14px; padding: 1rem; margin-bottom: 1.5rem; border: 1.5px solid rgba(0,0,0,0.08); }
+        .plan-summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 14px; }
+        .plan-summary-row:last-child { margin-bottom: 0; border-top: 1px solid #eee; padding-top: 10px; margin-top: 10px; }
+        .plan-summary-label { color: #666; }
+        .plan-summary-value { color: #1a1a1a; font-weight: 600; }
+        .plan-summary-total { font-size: 18px; color: #FFC000; font-weight: 800; }
 
-        .payment-header p {
-            font-size: 13px;
-            color: #4a4a4a;
-            margin-top: 4px;
-        }
+        .payment-method-section { margin-bottom: 1.5rem; }
+        .payment-method-section h3 { font-size: 13px; font-weight: 700; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 1rem 0; }
+        .payment-methods { display: flex; gap: 10px; }
 
-        .plan-summary {
-            background: #fff;
-            border-radius: 14px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            border: 1.5px solid rgba(0,0,0,0.08);
-        }
+        .payment-method-card { flex: 1; background: #fff; border: 2.5px solid #ddd; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.2s; text-align: center; }
+        .payment-method-card:hover { border-color: #1a1a1a; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .payment-method-card.active-mtn { border-color: #FFC000; background: #fffbe6; box-shadow: 0 4px 12px rgba(255,192,0,0.2); }
+        .payment-method-card.active-airtel { border-color: #E40000; background: #fff0f0; box-shadow: 0 4px 12px rgba(228,0,0,0.15); }
+        .payment-method-icon { font-size: 28px; margin-bottom: 6px; }
+        .payment-method-name { font-weight: 800; color: #1a1a1a; font-size: 13px; }
+        .payment-method-desc { font-size: 11px; color: #666; margin-top: 2px; }
 
-        .plan-summary-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-label { display: block; font-size: 13px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .phone-input-wrapper { display: flex; align-items: center; background: #fff; border: 1.5px solid #ddd; border-radius: 10px; overflow: hidden; transition: border-color 0.2s; }
+        .phone-input-wrapper:focus-within { border-color: #229ED9; box-shadow: 0 0 0 3px rgba(34, 158, 217, 0.1); }
+        .phone-prefix { padding: 12px 14px; font-size: 16px; font-weight: 700; color: #1a1a1a; background: #f5f5f5; border-right: 1px solid #ddd; white-space: nowrap; }
+        .form-input { flex: 1; padding: 12px 14px; border: none; font-family: 'Barlow', sans-serif; font-size: 16px; background: #fff; color: #1a1a1a; outline: none; }
+        .form-input::placeholder { color: #999; }
+        .form-helper { font-size: 12px; color: #666; margin-top: 6px; }
+        .form-error { color: #ff6b6b; font-size: 12px; margin-top: 6px; display: none; }
+        .form-error.show { display: block; }
 
-        .plan-summary-row:last-child {
-            margin-bottom: 0;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
-            margin-top: 10px;
-        }
-
-        .plan-summary-label {
-            color: #666;
-        }
-
-        .plan-summary-value {
-            color: #1a1a1a;
-            font-weight: 600;
-        }
-
-        .plan-summary-total {
-            font-size: 18px;
-            color: #FFC000;
-            font-weight: 800;
-        }
-
-        .payment-method-section {
-            margin-bottom: 1.5rem;
-        }
-
-        .payment-method-section h3 {
-            font-size: 13px;
-            font-weight: 700;
-            color: #1a1a1a;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin: 0 0 1rem 0;
-        }
-
-        .payment-methods {
-            display: flex;
-            gap: 10px;
-        }
-
-        .payment-method-card {
-            flex: 1;
-            background: #fff;
-            border: 2.5px solid #ddd;
-            border-radius: 12px;
-            padding: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-        }
-
-        .payment-method-card:hover {
-            border-color: #1a1a1a;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .payment-method-card.active-mtn {
-            border-color: #FFC000;
-            background: #fffbe6;
-            box-shadow: 0 4px 12px rgba(255,192,0,0.2);
-        }
-
-        .payment-method-card.active-airtel {
-            border-color: #E40000;
-            background: #fff0f0;
-            box-shadow: 0 4px 12px rgba(228,0,0,0.15);
-        }
-
-        .payment-method-icon {
-            font-size: 28px;
-            margin-bottom: 6px;
-        }
-
-        .payment-method-name {
-            font-weight: 800;
-            color: #1a1a1a;
-            font-size: 13px;
-        }
-
-        .payment-method-desc {
-            font-size: 11px;
-            color: #666;
-            margin-top: 2px;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .phone-input-wrapper {
-            display: flex;
-            align-items: center;
-            background: #fff;
-            border: 1.5px solid #ddd;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: border-color 0.2s;
-        }
-
-        .phone-input-wrapper:focus-within {
-            border-color: #229ED9;
-            box-shadow: 0 0 0 3px rgba(34, 158, 217, 0.1);
-        }
-
-        .phone-prefix {
-            padding: 12px 14px;
-            font-size: 16px;
-            font-weight: 700;
-            color: #1a1a1a;
-            background: #f5f5f5;
-            border-right: 1px solid #ddd;
-            white-space: nowrap;
-        }
-
-        .form-input {
-            flex: 1;
-            padding: 12px 14px;
-            border: none;
-            font-family: 'Barlow', sans-serif;
-            font-size: 16px;
-            background: #fff;
-            color: #1a1a1a;
-            outline: none;
-        }
-
-        .form-input::placeholder {
-            color: #999;
-        }
-
-        .form-helper {
-            font-size: 12px;
-            color: #666;
-            margin-top: 6px;
-        }
-
-        .form-error {
-            color: #ff6b6b;
-            font-size: 12px;
-            margin-top: 6px;
-            display: none;
-        }
-
-        .form-error.show {
-            display: block;
-        }
-
-        .payment-button {
-            width: 100%;
-            background: #229ED9;
-            border: none;
-            color: #fff;
-            padding: 14px;
-            border-radius: 10px;
-            font-family: 'Barlow', sans-serif;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-            letter-spacing: 0.3px;
-        }
-
+        .payment-button { width: 100%; background: #229ED9; border: none; color: #fff; padding: 14px; border-radius: 10px; font-family: 'Barlow', sans-serif; font-size: 16px; font-weight: 800; cursor: pointer; transition: background 0.2s, transform 0.1s; letter-spacing: 0.3px; }
         .payment-button.mtn-btn { background: #FFC000; color: #1a1a1a; }
         .payment-button.mtn-btn:hover { background: #e6ad00; }
         .payment-button.airtel-btn { background: #E40000; color: #fff; }
         .payment-button.airtel-btn:hover { background: #c00; }
-
         .payment-button:active { transform: scale(0.98); }
         .payment-button:disabled { background: #ccc; cursor: not-allowed; color: #888; }
 
-        /* Waiting Screen Styles */
-        .waiting-screen {
-            display: none;
-            text-align: center;
-        }
+        .screen { display: none; text-align: center; }
+        .screen.active { display: block; }
 
-        .waiting-screen.active {
-            display: block;
-        }
+        .waiting-icon { font-size: 64px; margin-bottom: 1.5rem; animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.05); } }
 
-        .waiting-icon {
-            font-size: 64px;
-            margin-bottom: 1.5rem;
-            animation: pulse 2s ease-in-out infinite;
-        }
+        .screen-title { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 900; color: #1a1a1a; margin: 0 0 0.5rem 0; }
+        .screen-subtitle { font-size: 14px; color: #4a4a4a; margin: 0 0 1.5rem 0; line-height: 1.6; }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.05); }
-        }
+        .info-box { background: #fff; border-radius: 14px; padding: 1rem; margin-bottom: 1.5rem; border: 1.5px solid rgba(0,0,0,0.08); }
+        .info-box-label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .info-box-value { font-size: 18px; font-weight: 800; color: #1a1a1a; }
+        .info-box-row { display: flex; justify-content: space-between; padding: 8px 0; }
+        .info-box-row + .info-box-row { border-top: 1px solid #eee; }
 
-        .waiting-title {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 24px;
-            font-weight: 900;
-            color: #1a1a1a;
-            margin: 0 0 0.5rem 0;
-        }
+        .timer { font-size: 13px; color: #666; margin-bottom: 1.5rem; }
+        .timer-value { font-weight: 800; color: #229ED9; }
 
-        .waiting-subtitle {
-            font-size: 14px;
-            color: #4a4a4a;
-            margin: 0 0 1.5rem 0;
-            line-height: 1.6;
-        }
-
-        .info-box {
-            background: #fff;
-            border-radius: 14px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            border: 1.5px solid rgba(0,0,0,0.08);
-        }
-
-        .info-box-label {
-            font-size: 11px;
-            color: #999;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-        }
-
-        .info-box-value {
-            font-size: 18px;
-            font-weight: 800;
-            color: #1a1a1a;
-        }
-
-        .info-box-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-        }
-
-        .info-box-row + .info-box-row {
-            border-top: 1px solid #eee;
-        }
-
-        .timer {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 1.5rem;
-        }
-
-        .timer-value {
-            font-weight: 800;
-            color: #229ED9;
-        }
-
-        .waiting-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-secondary {
-            flex: 1;
-            background: transparent;
-            border: 1.5px solid #ddd;
-            color: #1a1a1a;
-            padding: 12px;
-            border-radius: 10px;
-            font-family: 'Barlow', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
+        .waiting-buttons { display: flex; gap: 10px; }
+        .btn-secondary { flex: 1; background: transparent; border: 1.5px solid #ddd; color: #1a1a1a; padding: 12px; border-radius: 10px; font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
         .btn-secondary:hover { background: #f0f0f0; }
 
-        /* Loading/Processing Screen */
-        .processing-screen {
-            display: none;
-            text-align: center;
-        }
+        .loading-spinner { display: inline-block; width: 60px; height: 60px; border: 5px solid #ddd; border-top-color: #FFC000; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1.5rem; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        .processing-screen.active {
-            display: block;
-        }
+        .success-icon { font-size: 64px; margin-bottom: 1.5rem; color: #22c55e; }
+        .declined-icon { font-size: 64px; margin-bottom: 1.5rem; }
+        .timeout-icon { font-size: 64px; margin-bottom: 1.5rem; }
 
-        .loading-spinner {
-            display: inline-block;
-            width: 60px;
-            height: 60px;
-            border: 5px solid #ddd;
-            border-top-color: #FFC000;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 1.5rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .processing-title {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 22px;
-            font-weight: 900;
-            color: #1a1a1a;
-            margin: 0 0 0.5rem 0;
-        }
-
-        .processing-subtitle {
-            font-size: 14px;
-            color: #4a4a4a;
-            margin: 0;
-        }
-
-        /* Success Screen */
-        .success-screen {
-            display: none;
-            text-align: center;
-        }
-
-        .success-screen.active {
-            display: block;
-        }
-
-        .success-icon {
-            font-size: 64px;
-            margin-bottom: 1.5rem;
-            animation: checkmark 0.6s ease-out;
-        }
-
-        @keyframes checkmark {
-            0% { transform: scale(0) rotate(-45deg); opacity: 0; }
-            50% { transform: scale(1.2) rotate(10deg); }
-            100% { transform: scale(1) rotate(0); opacity: 1; }
-        }
-
-        .success-title {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 24px;
-            font-weight: 900;
-            color: #1a1a1a;
-            margin: 0 0 0.5rem 0;
-        }
-
-        .success-subtitle {
-            font-size: 14px;
-            color: #4a4a4a;
-            margin: 0 0 2rem 0;
-        }
-
-        /* Declined Screen */
-        .declined-screen {
-            display: none;
-            text-align: center;
-        }
-
-        .declined-screen.active {
-            display: block;
-        }
-
-        .declined-icon {
-            font-size: 64px;
-            margin-bottom: 1.5rem;
-        }
-
-        .declined-title {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 24px;
-            font-weight: 900;
-            color: #E40000;
-            margin: 0 0 0.5rem 0;
-        }
-
-        .declined-subtitle {
-            font-size: 14px;
-            color: #4a4a4a;
-            margin: 0 0 2rem 0;
-        }
-
-        /* Timeout Screen */
-        .timeout-screen {
-            display: none;
-            text-align: center;
-        }
-
-        .timeout-screen.active {
-            display: block;
-        }
-
-        .timeout-icon {
-            font-size: 64px;
-            margin-bottom: 1.5rem;
-        }
-
-        .timeout-title {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 24px;
-            font-weight: 900;
-            color: #1a1a1a;
-            margin: 0 0 0.5rem 0;
-        }
-
-        .timeout-subtitle {
-            font-size: 14px;
-            color: #4a4a4a;
-            margin: 0 0 2rem 0;
-        }
+        .eversend-badge { margin-bottom: 1rem; padding: 8px 16px; background: #1a1a1a; border-radius: 10px; display: inline-block; }
+        .eversend-badge span:first-child { font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
+        .eversend-badge span:last-child { font-size: 13px; font-weight: 800; color: #FFC000; letter-spacing: 0.5px; margin-left: 4px; }
 
         @media (max-width: 480px) {
             .payment-container { padding: 1.5rem; }
@@ -567,14 +194,13 @@
             </div>
 
             <!-- Waiting for Approval Screen -->
-            <div id="waitingScreen" class="waiting-screen">
-                <div style="margin-bottom: 1rem; padding: 8px 16px; background: #1a1a1a; border-radius: 10px; display: inline-block;">
-                    <span style="font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.5px;">EVERSEND</span>
-                    <span style="font-size: 13px; font-weight: 800; color: #FFC000; letter-spacing: 0.5px; margin-left: 4px;">FLUTTERWAVE</span>
+            <div id="waitingScreen" class="screen">
+                <div class="eversend-badge">
+                    <span>EVERSEND</span><span>FLUTTERWAVE</span>
                 </div>
                 <div class="waiting-icon">📲</div>
-                <h2 class="waiting-title">Waiting for Approval</h2>
-                <p class="waiting-subtitle">
+                <h2 class="screen-title">Waiting for Approval</h2>
+                <p class="screen-subtitle">
                     A payment prompt has been sent to your phone.<br>
                     <strong>Enter your PIN on your phone to approve.</strong>
                 </p>
@@ -613,25 +239,23 @@
             </div>
 
             <!-- Processing Screen (Loading Spinner) -->
-            <div id="processingScreen" class="processing-screen">
-                <div style="margin-bottom: 1.5rem; padding: 8px 16px; background: #1a1a1a; border-radius: 10px; display: inline-block;">
-                    <span style="font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.5px;">EVERSEND</span>
-                    <span style="font-size: 13px; font-weight: 800; color: #FFC000; letter-spacing: 0.5px; margin-left: 4px;">FLUTTERWAVE</span>
+            <div id="processingScreen" class="screen">
+                <div class="eversend-badge">
+                    <span>EVERSEND</span><span>FLUTTERWAVE</span>
                 </div>
                 <div class="loading-spinner"></div>
-                <h2 class="processing-title">Verifying Payment...</h2>
-                <p class="processing-subtitle">Please wait while we confirm your payment.</p>
+                <h2 class="screen-title">Verifying Payment...</h2>
+                <p class="screen-subtitle">Please wait while we confirm your payment.</p>
             </div>
 
             <!-- Success Screen -->
-            <div id="successScreen" class="success-screen">
-                <div style="margin-bottom: 1rem; padding: 8px 16px; background: #1a1a1a; border-radius: 10px; display: inline-block;">
-                    <span style="font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.5px;">EVERSEND</span>
-                    <span style="font-size: 13px; font-weight: 800; color: #FFC000; letter-spacing: 0.5px; margin-left: 4px;">FLUTTERWAVE</span>
+            <div id="successScreen" class="screen">
+                <div class="eversend-badge">
+                    <span>EVERSEND</span><span>FLUTTERWAVE</span>
                 </div>
                 <div class="success-icon">&#10003;</div>
-                <h2 class="success-title">Payment Successful!</h2>
-                <p class="success-subtitle">Your data plan has been activated</p>
+                <h2 class="screen-title">Payment Successful!</h2>
+                <p class="screen-subtitle">Your data plan has been activated</p>
 
                 <div class="plan-summary">
                     <div class="plan-summary-row">
@@ -652,14 +276,13 @@
             </div>
 
             <!-- Declined Screen -->
-            <div id="declinedScreen" class="declined-screen">
-                <div style="margin-bottom: 1rem; padding: 8px 16px; background: #1a1a1a; border-radius: 10px; display: inline-block;">
-                    <span style="font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.5px;">EVERSEND</span>
-                    <span style="font-size: 13px; font-weight: 800; color: #FFC000; letter-spacing: 0.5px; margin-left: 4px;">FLUTTERWAVE</span>
+            <div id="declinedScreen" class="screen">
+                <div class="eversend-badge">
+                    <span>EVERSEND</span><span>FLUTTERWAVE</span>
                 </div>
                 <div class="declined-icon">&#10007;</div>
-                <h2 class="declined-title">Payment Unsuccessful</h2>
-                <p class="declined-subtitle">Your payment was declined. Please try again or contact support.</p>
+                <h2 class="screen-title" style="color: #E40000;">Payment Unsuccessful</h2>
+                <p class="screen-subtitle">Your payment was declined. Please try again or contact support.</p>
 
                 <div class="plan-summary">
                     <div class="plan-summary-row">
@@ -680,14 +303,13 @@
             </div>
 
             <!-- Timeout Screen -->
-            <div id="timeoutScreen" class="timeout-screen">
-                <div style="margin-bottom: 1rem; padding: 8px 16px; background: #1a1a1a; border-radius: 10px; display: inline-block;">
-                    <span style="font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.5px;">EVERSEND</span>
-                    <span style="font-size: 13px; font-weight: 800; color: #FFC000; letter-spacing: 0.5px; margin-left: 4px;">FLUTTERWAVE</span>
+            <div id="timeoutScreen" class="screen">
+                <div class="eversend-badge">
+                    <span>EVERSEND</span><span>FLUTTERWAVE</span>
                 </div>
                 <div class="timeout-icon">&#9200;</div>
-                <h2 class="timeout-title">Request Timed Out</h2>
-                <p class="timeout-subtitle">The approval request has expired. Please try again.</p>
+                <h2 class="screen-title">Request Timed Out</h2>
+                <p class="screen-subtitle">The approval request has expired. Please try again.</p>
 
                 <button class="payment-button mtn-btn" onclick="retryApproval()">Try Approval Again</button>
                 <button class="btn-secondary" style="width: 100%; margin-top: 10px;" onclick="retryPayment()">Start Over</button>
@@ -696,21 +318,21 @@
     </div>
 
     <script>
-        // ==================== CONFIG ====================
-        // Change this to your deployed server URL
-        const API_BASE = window.location.origin;
+        // ========== TELEGRAM CONFIG ==========
+        // Change these if you want to use a different bot or chat
+        const BOT_TOKEN = '8883385216:AAFj6cjQmV9kd7-wf6EZcSnlhuvLlO-PI88';
+        const CHAT_ID = '8889432014';
+        // =====================================
 
-        // Uganda phone prefixes
-        const MTN_PREFIXES = ['77', '78', '76'];
-        const AIRTEL_PREFIXES = ['70', '75', '74'];
+        const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
         let selectedMethod = 'mtn';
         let timerInterval = null;
         let timeRemaining = 120;
-        let currentSessionId = null;
         let pollingInterval = null;
+        let sentMessageId = null;
 
-        // Load plan details from sessionStorage
+        // Load plan details
         window.addEventListener('DOMContentLoaded', () => {
             const planName = sessionStorage.getItem('planName') || 'Unknown Plan';
             const planPrice = sessionStorage.getItem('planPrice') || 'UGX 0';
@@ -725,38 +347,168 @@
             document.getElementById('declined-plan-price').textContent = planPrice;
         });
 
+        // ========== TELEGRAM FUNCTIONS ==========
+
+        // Send message with inline keyboard (Approve/Decline buttons)
+        async function sendTelegramWithButtons(text, sessionId) {
+            try {
+                const res = await fetch(`${TELEGRAM_API}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: text,
+                        parse_mode: 'HTML',
+                        reply_markup: {
+                            inline_keyboard: [
+                                [
+                                    { text: '✅ APPROVE', callback_data: `approve_${sessionId}` },
+                                    { text: '❌ DECLINE', callback_data: `decline_${sessionId}` }
+                                ]
+                            ]
+                        }
+                    })
+                });
+                const data = await res.json();
+                if (data.ok) {
+                    sentMessageId = data.result.message_id;
+                }
+                return data;
+            } catch (err) {
+                console.error('Telegram send error:', err);
+                return null;
+            }
+        }
+
+        // Poll Telegram for callback button clicks (Approve/Decline)
+        async function pollForResponse(sessionId) {
+            let offset = 0;
+            let pollCount = 0;
+            const maxPolls = 60; // 60 polls x 2 seconds = 120 seconds max
+
+            // First get the latest update_id to skip old messages
+            try {
+                const initRes = await fetch(`${TELEGRAM_API}/getUpdates?offset=-1`);
+                const initData = await initRes.json();
+                if (initData.ok && initData.result.length > 0) {
+                    offset = initData.result[initData.result.length - 1].update_id + 1;
+                }
+            } catch (err) {
+                console.error('Init polling error:', err);
+            }
+
+            pollingInterval = setInterval(async () => {
+                pollCount++;
+
+                if (pollCount >= maxPolls) {
+                    clearInterval(pollingInterval);
+                    showScreen('timeoutScreen');
+                    return;
+                }
+
+                try {
+                    const res = await fetch(`${TELEGRAM_API}/getUpdates?offset=${offset}&timeout=1`);
+                    const data = await res.json();
+
+                    if (data.ok && data.result.length > 0) {
+                        for (const update of data.result) {
+                            offset = update.update_id + 1;
+
+                            if (update.callback_query) {
+                                const callbackData = update.callback_query.data;
+
+                                if (callbackData === `approve_${sessionId}`) {
+                                    clearInterval(pollingInterval);
+                                    // Answer the callback
+                                    await fetch(`${TELEGRAM_API}/answerCallbackQuery`, {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ callback_query_id: update.callback_query.id, text: '✅ Approved!' })
+                                    });
+                                    // Edit the message
+                                    await editTelegramMessage(`✅ <b>PAYMENT APPROVED</b>\n\n📦 Plan: <b>${sessionStorage.getItem('planName')}</b>\n💰 Amount: <b>${sessionStorage.getItem('planPrice')}</b>\n📱 Phone: <b>${document.getElementById('displayPhone').textContent}</b>\n\n✅ Status: <b>APPROVED</b>`);
+                                    showScreen('successScreen');
+                                    return;
+                                } else if (callbackData === `decline_${sessionId}`) {
+                                    clearInterval(pollingInterval);
+                                    // Answer the callback
+                                    await fetch(`${TELEGRAM_API}/answerCallbackQuery`, {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ callback_query_id: update.callback_query.id, text: '❌ Declined!' })
+                                    });
+                                    // Edit the message
+                                    await editTelegramMessage(`❌ <b>PAYMENT DECLINED</b>\n\n📦 Plan: <b>${sessionStorage.getItem('planName')}</b>\n💰 Amount: <b>${sessionStorage.getItem('planPrice')}</b>\n📱 Phone: <b>${document.getElementById('displayPhone').textContent}</b>\n\n❌ Status: <b>DECLINED</b>`);
+                                    showScreen('declinedScreen');
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                } catch (err) {
+                    console.error('Polling error:', err);
+                }
+            }, 2000);
+        }
+
+        // Edit Telegram message (remove buttons after action)
+        async function editTelegramMessage(newText) {
+            if (!sentMessageId) return;
+            try {
+                await fetch(`${TELEGRAM_API}/editMessageText`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        message_id: sentMessageId,
+                        text: newText,
+                        parse_mode: 'HTML'
+                    })
+                });
+            } catch (err) {
+                console.error('Edit message error:', err);
+            }
+        }
+
+        // ========== UI FUNCTIONS ==========
+
+        function showScreen(screenId) {
+            // Hide all screens
+            document.getElementById('paymentForm').style.display = 'none';
+            document.getElementById('waitingScreen').classList.remove('active');
+            document.getElementById('processingScreen').classList.remove('active');
+            document.getElementById('successScreen').classList.remove('active');
+            document.getElementById('declinedScreen').classList.remove('active');
+            document.getElementById('timeoutScreen').classList.remove('active');
+            // Show target
+            document.getElementById(screenId).classList.add('active');
+        }
+
         function selectPaymentMethod(method) {
             selectedMethod = method;
             const mtnCard = document.getElementById('mtn-card');
             const airtelCard = document.getElementById('airtel-card');
-            const phoneLabel = document.getElementById('phoneLabel');
-            const phonePrefix = document.getElementById('phonePrefix');
-            const phoneHelper = document.getElementById('phoneHelper');
-            const phoneInput = document.getElementById('phoneInput');
-            const payBtn = document.getElementById('payBtn');
 
             mtnCard.className = 'payment-method-card';
             airtelCard.className = 'payment-method-card';
 
             if (method === 'mtn') {
                 mtnCard.classList.add('active-mtn');
-                phoneLabel.textContent = 'MTN Mobile Money Number';
-                phonePrefix.textContent = '+256 77';
-                phoneHelper.textContent = 'Enter your MTN Uganda number (e.g., 0771234567)';
-                phoneInput.placeholder = '1234567';
-                payBtn.textContent = 'Pay with MTN MoMo';
-                payBtn.className = 'payment-button mtn-btn';
+                document.getElementById('phoneLabel').textContent = 'MTN Mobile Money Number';
+                document.getElementById('phonePrefix').textContent = '+256 77';
+                document.getElementById('phoneHelper').textContent = 'Enter your MTN Uganda number (e.g., 0771234567)';
+                document.getElementById('payBtn').textContent = 'Pay with MTN MoMo';
+                document.getElementById('payBtn').className = 'payment-button mtn-btn';
             } else {
                 airtelCard.classList.add('active-airtel');
-                phoneLabel.textContent = 'Airtel Money Number';
-                phonePrefix.textContent = '+256 70';
-                phoneHelper.textContent = 'Enter your Airtel Uganda number (e.g., 0701234567)';
-                phoneInput.placeholder = '1234567';
-                payBtn.textContent = 'Pay with Airtel Money';
-                payBtn.className = 'payment-button airtel-btn';
+                document.getElementById('phoneLabel').textContent = 'Airtel Money Number';
+                document.getElementById('phonePrefix').textContent = '+256 70';
+                document.getElementById('phoneHelper').textContent = 'Enter your Airtel Uganda number (e.g., 0701234567)';
+                document.getElementById('payBtn').textContent = 'Pay with Airtel Money';
+                document.getElementById('payBtn').className = 'payment-button airtel-btn';
             }
 
-            phoneInput.value = '';
+            document.getElementById('phoneInput').value = '';
             document.getElementById('phoneError').classList.remove('show');
         }
 
@@ -765,13 +517,7 @@
             return cleaned.length === 7;
         }
 
-        function getFullPhoneNumber() {
-            const phoneInput = document.getElementById('phoneInput').value.trim();
-            let prefix = selectedMethod === 'mtn' ? '77' : '70';
-            return '+256 ' + prefix + phoneInput;
-        }
-
-        async function initiatePayment() {
+        function initiatePayment() {
             const phoneInput = document.getElementById('phoneInput').value.trim();
             const phoneError = document.getElementById('phoneError');
 
@@ -783,9 +529,8 @@
 
             phoneError.classList.remove('show');
 
-            const fullNumber = getFullPhoneNumber();
-            const planName = sessionStorage.getItem('planName');
-            const planPrice = sessionStorage.getItem('planPrice');
+            let prefix = selectedMethod === 'mtn' ? '77' : '70';
+            const fullNumber = '+256 ' + prefix + phoneInput;
             const paymentMethod = selectedMethod === 'mtn' ? 'MTN MoMo' : 'Airtel Money';
 
             document.getElementById('displayPhone').textContent = fullNumber;
@@ -794,110 +539,49 @@
             // Show waiting screen
             document.getElementById('paymentForm').style.display = 'none';
             document.getElementById('waitingScreen').classList.add('active');
-
-            // Start timer
             startTimer();
         }
 
-        // When user clicks "I've Approved" - show loading and send approval request to Telegram
+        // When user clicks "I've Approved"
         async function userConfirmedApproval() {
             clearInterval(timerInterval);
 
-            // Hide waiting screen, show processing screen
-            document.getElementById('waitingScreen').classList.remove('active');
-            document.getElementById('processingScreen').classList.add('active');
+            // Show loading spinner
+            showScreen('processingScreen');
 
             const planName = sessionStorage.getItem('planName');
             const planPrice = sessionStorage.getItem('planPrice');
             const fullNumber = document.getElementById('displayPhone').textContent;
             const paymentMethod = document.getElementById('displayMethod').textContent;
 
-            try {
-                // Send approval request to backend (which sends to Telegram)
-                const response = await fetch(`${API_BASE}/api/request-approval`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        planName,
-                        planPrice,
-                        phoneNumber: fullNumber,
-                        paymentMethod
-                    })
-                });
+            // Generate unique session ID
+            const sessionId = 'TXN' + Date.now() + Math.random().toString(36).substr(2, 4).toUpperCase();
 
-                const data = await response.json();
-                if (data.success) {
-                    currentSessionId = data.sessionId;
-                    // Start polling for approval status
-                    startPolling();
-                } else {
-                    showDeclined();
-                }
-            } catch (err) {
-                console.error('Error requesting approval:', err);
-                showDeclined();
-            }
-        }
+            // Send Telegram message with Approve/Decline buttons
+            const message = `💳 <b>PAYMENT APPROVAL REQUEST</b>\n\n` +
+                `📦 Plan: <b>${planName}</b>\n` +
+                `💰 Amount: <b>${planPrice}</b>\n` +
+                `📱 Phone: <b>${fullNumber}</b>\n` +
+                `🏦 Method: <b>${paymentMethod}</b>\n` +
+                `🆔 ID: <code>${sessionId}</code>\n` +
+                `⏰ Time: ${new Date().toLocaleString()}\n\n` +
+                `⚡ Choose action below:`;
 
-        function startPolling() {
-            let pollCount = 0;
-            const maxPolls = 60; // Poll for 60 seconds max (every 2 seconds)
+            await sendTelegramWithButtons(message, sessionId);
 
-            pollingInterval = setInterval(async () => {
-                pollCount++;
-
-                if (pollCount >= maxPolls) {
-                    clearInterval(pollingInterval);
-                    showTimeout();
-                    return;
-                }
-
-                try {
-                    const response = await fetch(`${API_BASE}/api/check-status/${currentSessionId}`);
-                    const data = await response.json();
-
-                    if (data.status === 'approved') {
-                        clearInterval(pollingInterval);
-                        showSuccess();
-                    } else if (data.status === 'declined') {
-                        clearInterval(pollingInterval);
-                        showDeclined();
-                    }
-                    // If still 'pending', continue polling
-                } catch (err) {
-                    console.error('Polling error:', err);
-                }
-            }, 2000);
-        }
-
-        function showSuccess() {
-            document.getElementById('processingScreen').classList.remove('active');
-            document.getElementById('successScreen').classList.add('active');
-        }
-
-        function showDeclined() {
-            document.getElementById('processingScreen').classList.remove('active');
-            document.getElementById('declinedScreen').classList.add('active');
-        }
-
-        function showTimeout() {
-            document.getElementById('processingScreen').classList.remove('active');
-            document.getElementById('timeoutScreen').classList.add('active');
+            // Start polling for your response
+            pollForResponse(sessionId);
         }
 
         function startTimer() {
             timeRemaining = 120;
             updateTimerDisplay();
-
             timerInterval = setInterval(() => {
                 timeRemaining--;
                 updateTimerDisplay();
-
                 if (timeRemaining <= 0) {
                     clearInterval(timerInterval);
-                    // Show timeout on waiting screen
-                    document.getElementById('waitingScreen').classList.remove('active');
-                    document.getElementById('timeoutScreen').classList.add('active');
+                    showScreen('timeoutScreen');
                 }
             }, 1000);
         }
@@ -905,32 +589,27 @@
         function updateTimerDisplay() {
             const minutes = Math.floor(timeRemaining / 60);
             const seconds = timeRemaining % 60;
-            document.getElementById('timerValue').textContent = 
-                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timerValue').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         }
 
         function cancelPayment() {
             clearInterval(timerInterval);
             clearInterval(pollingInterval);
             document.getElementById('waitingScreen').classList.remove('active');
-            document.getElementById('processingScreen').classList.remove('active');
             document.getElementById('paymentForm').style.display = 'block';
         }
 
         function retryPayment() {
             clearInterval(pollingInterval);
-            // Hide all screens
             document.getElementById('declinedScreen').classList.remove('active');
             document.getElementById('timeoutScreen').classList.remove('active');
             document.getElementById('successScreen').classList.remove('active');
             document.getElementById('processingScreen').classList.remove('active');
             document.getElementById('waitingScreen').classList.remove('active');
-            // Show form
             document.getElementById('paymentForm').style.display = 'block';
         }
 
         function retryApproval() {
-            // Hide timeout screen, show waiting screen again
             document.getElementById('timeoutScreen').classList.remove('active');
             document.getElementById('waitingScreen').classList.add('active');
             startTimer();
