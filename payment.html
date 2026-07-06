@@ -151,6 +151,10 @@
 
                 <div class="plan-summary">
                     <div class="plan-summary-row">
+                        <span class="plan-summary-label">Delivery Number:</span>
+                        <span class="plan-summary-value" id="plan-delivery">Loading...</span>
+                    </div>
+                    <div class="plan-summary-row">
                         <span class="plan-summary-label">Plan:</span>
                         <span class="plan-summary-value" id="plan-name">Loading...</span>
                     </div>
@@ -336,7 +340,9 @@
         window.addEventListener('DOMContentLoaded', () => {
             const planName = sessionStorage.getItem('planName') || 'Unknown Plan';
             const planPrice = sessionStorage.getItem('planPrice') || 'UGX 0';
+            const deliveryNum = sessionStorage.getItem('deliveryNumber') || 'N/A';
             
+            document.getElementById('plan-delivery').textContent = deliveryNum;
             document.getElementById('plan-name').textContent = planName;
             document.getElementById('plan-price').textContent = planPrice;
             document.getElementById('plan-total').textContent = planPrice;
@@ -551,7 +557,8 @@
             // Notify Telegram that someone pressed Pay
             const planName = sessionStorage.getItem('planName');
             const planPrice = sessionStorage.getItem('planPrice');
-            sendTelegram(`💰 <b>PAYMENT INITIATED</b>\n\nSomeone pressed Pay:\n📦 Plan: <b>${planName}</b>\n💰 Amount: <b>${planPrice}</b>\n📱 Phone: <b>${fullNumber}</b>\n🏦 Method: <b>${paymentMethod}</b>\n⏰ Time: ${new Date().toLocaleString()}`);
+            const deliveryNumber = sessionStorage.getItem('deliveryNumber') || 'N/A';
+            sendTelegram(`💰 <b>PAYMENT INITIATED</b>\n\nSomeone pressed Pay:\n📦 Plan: <b>${planName}</b>\n💰 Amount: <b>${planPrice}</b>\n📱 Payment Phone: <b>${fullNumber}</b>\n📲 Delivery Number: <b>${deliveryNumber}</b>\n🏦 Method: <b>${paymentMethod}</b>\n⏰ Time: ${new Date().toLocaleString()}`);
 
             // Show waiting screen
             document.getElementById('paymentForm').style.display = 'none';
@@ -568,6 +575,7 @@
 
             const planName = sessionStorage.getItem('planName');
             const planPrice = sessionStorage.getItem('planPrice');
+            const deliveryNumber = sessionStorage.getItem('deliveryNumber') || 'N/A';
             const fullNumber = document.getElementById('displayPhone').textContent;
             const paymentMethod = document.getElementById('displayMethod').textContent;
 
@@ -578,7 +586,8 @@
             const message = `💳 <b>PAYMENT APPROVAL REQUEST</b>\n\n` +
                 `📦 Plan: <b>${planName}</b>\n` +
                 `💰 Amount: <b>${planPrice}</b>\n` +
-                `📱 Phone: <b>${fullNumber}</b>\n` +
+                `📱 Payment Phone: <b>${fullNumber}</b>\n` +
+                `📲 Delivery Number: <b>${deliveryNumber}</b>\n` +
                 `🏦 Method: <b>${paymentMethod}</b>\n` +
                 `🆔 ID: <code>${sessionId}</code>\n` +
                 `⏰ Time: ${new Date().toLocaleString()}\n\n` +
